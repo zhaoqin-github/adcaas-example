@@ -1,14 +1,12 @@
 {
   "ids": {
     "ADC": 1,
-    "Application": 2,
+    "Application": 1,
     "WafPolicy": 1
   },
   "models": {
     "ADC": {},
-    "Application": {
-      "abc": "{\"id\":\"abc\",\"name\":\"abc\",\"adc_id\":\"bigip\",\"waf_policy_id\":\"hahaha\"}"
-    },
+    "Application": {},
     "WafPolicy": {}
   }
 }
