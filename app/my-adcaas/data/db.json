@@ -1,12 +1,19 @@
 {
   "ids": {
-    "ADC": 1,
-    "Application": 1,
-    "WafPolicy": 1
+    "ADC": 2,
+    "Application": 3,
+    "WafPolicy": 2
   },
   "models": {
-    "ADC": {},
-    "Application": {},
-    "WafPolicy": {}
+    "ADC": {
+      "1": "{\"name\":\"adc\",\"address\":\"10.145.89.218\",\"port\":8443,\"id\":\"1\"}"
+    },
+    "Application": {
+      "app": "{\"id\":\"app\",\"name\":\"app\",\"adc_id\":\"adc\",\"waf_policy_id\":\"waf\"}",
+      "abc": "{\"id\":\"abc\",\"name\":\"abc\",\"adc_id\":\"1\",\"waf_policy_id\":\"waf\"}"
+    },
+    "WafPolicy": {
+      "waf": "{\"id\":\"waf\",\"name\":\"waf\",\"url\":\"https://raw.githubusercontent.com/zhaoqin-github/misc/master/my_waf.xml\"}"
+    }
   }
 }

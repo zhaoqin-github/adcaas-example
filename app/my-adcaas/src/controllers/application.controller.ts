@@ -1,3 +1,4 @@
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -17,11 +18,21 @@ import {
 } from '@loopback/rest';
 import {Application} from '../models';
 import {ApplicationRepository} from '../repositories';
+import {WafPolicy} from '../models';
+import {WafPolicyRepository} from '../repositories';
+import {ADC} from '../models';
+import {ADCRepository} from '../repositories';
+import {AS3Service} from '../services';
 
 export class ApplicationController {
   constructor(
     @repository(ApplicationRepository)
     public applicationRepository: ApplicationRepository,
+    @repository(WafPolicyRepository)
+    public wafPolicyRepository: WafPolicyRepository,
+    @repository(ADCRepository)
+    public adcRepository: ADCRepository,
+    @inject('services.AS3Service') protected as3Service: AS3Service,
   ) {}
 
   @post('/applications', {
@@ -126,9 +137,54 @@ export class ApplicationController {
       '204': {
         description: 'Application deploy success',
       },
+      '404': {
+        description: 'Application not found',
+      },
     },
   })
   async deployById(@param.path.string('id') id: string): Promise<void> {
+    let app = await this.applicationRepository.findById(id);
+    let waf = await this.wafPolicyRepository.findById(app.waf_policy_id);
+    let adc = await this.adcRepository.findById(app.adc_id);
+
+    let declaration = {
+      class: 'ADC',
+      schemaVersion: '3.0.0',
+      id: 'zhaoqin',
+      label: 'Sample1',
+      remark: 'Simple HTTP application',
+      Tenant1: {
+        class: 'Tenant',
+        App1: {
+          class: 'Application',
+          template: 'http',
+          serviceMain: {
+            class: 'Service_HTTP',
+            virtualAddresses: ['10.0.1.10'],
+            pool: 'web_pool',
+            policyWAF: {
+              use: 'my_waf',
+            },
+          },
+          web_pool: {
+            class: 'Pool',
+            monitors: ['http'],
+            members: [
+              {
+                servicePort: 80,
+                serverAddresses: ['192.0.1.10', '192.0.1.11'],
+              },
+            ],
+          },
+          my_waf: {
+            class: 'WAF_Policy',
+            url: waf.url,
+          },
+        },
+      },
+    };
+
+    await this.as3Service.deploy(adc.address, adc.port, declaration);
     return;
   }
 }
