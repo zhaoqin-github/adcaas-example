@@ -120,4 +120,15 @@ export class ApplicationController {
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.applicationRepository.deleteById(id);
   }
+
+  @post('/applications/{id}/deploy', {
+    responses: {
+      '204': {
+        description: 'Application deploy success',
+      },
+    },
+  })
+  async deployById(@param.path.string('id') id: string): Promise<void> {
+    return;
+  }
 }
