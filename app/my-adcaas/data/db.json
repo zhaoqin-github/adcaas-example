@@ -1,9 +1,10 @@
 {
   "ids": {
-    "ADC": 1
+    "ADC": 1,
+    "Application": 1
   },
   "models": {
-    "ADC": {
-    }
+    "ADC": {},
+    "Application": {}
   }
 }
