@@ -11,7 +11,6 @@ import {
   get,
   getFilterSchemaFor,
   getWhereSchemaFor,
-  patch,
   del,
   requestBody,
 } from '@loopback/rest';
@@ -69,21 +68,6 @@ export class WafPolicyController {
     return await this.wafPolicyRepository.find(filter);
   }
 
-  @patch('/waf-policies', {
-    responses: {
-      '200': {
-        description: 'WafPolicy PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
-  })
-  async updateAll(
-    @requestBody() wafPolicy: WafPolicy,
-    @param.query.object('where', getWhereSchemaFor(WafPolicy)) where?: Where,
-  ): Promise<Count> {
-    return await this.wafPolicyRepository.updateAll(wafPolicy, where);
-  }
-
   @get('/waf-policies/{id}', {
     responses: {
       '200': {
@@ -94,20 +78,6 @@ export class WafPolicyController {
   })
   async findById(@param.path.string('id') id: string): Promise<WafPolicy> {
     return await this.wafPolicyRepository.findById(id);
-  }
-
-  @patch('/waf-policies/{id}', {
-    responses: {
-      '204': {
-        description: 'WafPolicy PATCH success',
-      },
-    },
-  })
-  async updateById(
-    @param.path.string('id') id: string,
-    @requestBody() wafPolicy: WafPolicy,
-  ): Promise<void> {
-    await this.wafPolicyRepository.updateById(id, wafPolicy);
   }
 
   @del('/waf-policies/{id}', {
