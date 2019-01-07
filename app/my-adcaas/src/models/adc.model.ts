@@ -5,12 +5,13 @@ export class ADC extends Entity {
   @property({
     type: 'string',
     id: true,
-    required: true,
+    required: false,
   })
   id: string;
 
   @property({
     type: 'string',
+    required: false,
   })
   name?: string;
 
@@ -22,7 +23,7 @@ export class ADC extends Entity {
 
   @property({
     type: 'number',
-    required: true,
+    required: false,
     default: 443,
   })
   port: number;
