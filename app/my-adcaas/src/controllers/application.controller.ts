@@ -18,9 +18,7 @@ import {
 } from '@loopback/rest';
 import {Application} from '../models';
 import {ApplicationRepository} from '../repositories';
-import {WafPolicy} from '../models';
 import {WafPolicyRepository} from '../repositories';
-import {ADC} from '../models';
 import {ADCRepository} from '../repositories';
 import {AS3Service} from '../services';
 
